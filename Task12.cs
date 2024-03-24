@@ -3,41 +3,41 @@ int[] arr2 = { 155, 160, 153, 158, 165, 167, 169, 170, 190, 180, 185 };
 int[] arr3 = { 5, 4, 8, 7, 3, 6, 10, 9, 2, 1 };
 
 A ob = new Bubble();
-Console.WriteLine(ob.ToString());
+Console.WriteLine("Bubble");
 ob.Methods(arr1);
 ob = new Insertion();
-Console.WriteLine(ob.ToString());
+Console.WriteLine("Insertion");
 ob.Methods(arr2);
 ob = new Selection();
-Console.WriteLine(ob.ToString());
+Console.WriteLine("Selection");
 ob.Methods(arr3);
 
 abstract class A
 {
-    public void Methods(int[] arr)
+    public void Methods(int[] numbers)
     {
-        Console.WriteLine("------------------------------------------");
-        Console.WriteLine("Unsorted array");
-        PrintArray(arr);
-        Console.WriteLine("------------------------------------------");
-        int n = arr.Length;
-        Sort(arr, n);
-        Console.WriteLine("------------------------------------------");
-        Console.WriteLine("Sorted array");
-        PrintArray(arr);
-        Console.WriteLine("------------------------------------------");
+        Console.WriteLine();
+        Console.WriteLine("Unsorted");
+        Print(numbers);
+        Console.WriteLine();
+        int numLength = numbers.Length;
+        Sort(numbers, numLength);
+        Console.WriteLine();
+        Console.WriteLine("Sorted");
+        Print(numbers);
+        Console.WriteLine();
         Console.WriteLine();
         Console.WriteLine();
 
     }
 
-    public abstract void Sort(int[] arr, int n);
+    public abstract void Sort(int[] numbers, int numLength);
 
-    public void PrintArray(int[] arr)
+    public void Print(int[] numbers)
     {
-        foreach (var item in arr)
+        foreach (var num in numbers)
         {
-            Console.Write(item + " ");
+            Console.Write(num + " ");
         }
         Console.WriteLine();
     }
@@ -45,59 +45,60 @@ abstract class A
 
 class Bubble : A
 {
-    public override void Sort(int[] arr, int n)
+    public override void Sort(int[] numbers, int numLength)
     {
-        for (int i = 0; i < n - 1; i++)
+        int t;
+        for (int i = 0; i < numLength - 1; i++)
         {
-            for (int j = 0; j < n - i - 1; j++)
-                if (arr[j] > arr[j + 1])
+            for (int j = 0; j < numLength - i - 1; j++)
+                if (numbers[j] > numbers[j + 1])
                 {
-                    var tempVar = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = tempVar;
+                    t = numbers[j + 1];
+                    numbers[j + 1] = numbers[j];
+                    numbers[j] = t;
                 }
-            PrintArray(arr);
+            Print(numbers);
         }
 
     }
 }
 class Insertion : A
 {
-    public override void Sort(int[] arr, int n)
+    public override void Sort(int[] numbers, int numLength)
     {
-        for (int i = 1; i < n; ++i)
+        for (int i = 1; i < numLength; i++)
         {
-            int key = arr[i];
+            int key = numbers[i];
             int j = i - 1;
 
-            while (j >= 0 && arr[j] > key)
+            while (j >= 0 && numbers[j] > key)
             {
-                arr[j + 1] = arr[j];
+                numbers[j + 1] = numbers[j];
                 j = j - 1;
             }
-            arr[j + 1] = key;
-            PrintArray(arr);
+            numbers[j + 1] = key;
+            Print(numbers);
         }
     }
 }
 class Selection : A
 {
-    public override void Sort(int[] arr, int n)
+    public override void Sort(int[] numbers, int numLength)
     {
-        for (int i = 0; i < n - 1; i++)
+        for (int i = 0; i < numLength - 1; i++)
         {
             int minIndex = i;
-            for (int j = i + 1; j < n; j++)
+            for (int j = i + 1; j < numLength; j++)
             {
-                if (arr[j] < arr[minIndex])
+                if (numbers[j] < numbers[minIndex])
                 {
                     minIndex = j;
                 }
             }
-            int tempVar = arr[minIndex];
-            arr[minIndex] = arr[i];
-            arr[i] = tempVar;
-            PrintArray(arr);
+            int tempVar = numbers[minIndex];
+            numbers[minIndex] = numbers[i];
+            numbers[i] = tempVar;
+            Print(numbers);
         }
     }
 }
