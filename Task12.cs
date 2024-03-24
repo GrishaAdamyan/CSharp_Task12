@@ -1,29 +1,52 @@
-﻿int[] arr1 = { 73, 57, 49, 99, 133, 20, 1 };
-int[] arr2 = { 73, 57, 49, 99, 133, 20, 1 };
-int[] arr3 = { 73, 57, 49, 99, 133, 20, 1 };
-B ob = new A();
-ob.Methods(arr1, arr2, arr3);
-abstract class B
+﻿int[] arr1 = { 17, 18, 15, 19, 14, 20, 12, 24, 30, 10 };
+int[] arr2 = { 155, 160, 153, 158, 165, 167, 169, 170, 190, 180, 185 };
+int[] arr3 = { 5, 4, 8, 7, 3, 6, 10, 9, 2, 1 };
+
+A ob = new Bubble();
+Console.WriteLine(ob.ToString());
+ob.Methods(arr1);
+ob = new Insertion();
+Console.WriteLine(ob.ToString());
+ob.Methods(arr2);
+ob = new Selection();
+Console.WriteLine(ob.ToString());
+ob.Methods(arr3);
+
+abstract class A
 {
-    public void Methods(int[] arr1, int[] arr2, int[] arr3)
+    public void Methods(int[] arr)
     {
-        Bubble(arr1);
-        Insertion(arr2);
-        Selection(arr3);
-    }
-    public abstract void Bubble(int[] arr);
-    public abstract void Insertion(int[] arr);
-    public abstract void Selection(int[] arr);
-}
-class A : B
-{
-    public override void Bubble(int[] arr)
-    {
-        Console.WriteLine("-------------------------------------");
+        Console.WriteLine("------------------------------------------");
         Console.WriteLine("Unsorted array");
-        DisplayArray(arr);
-        Console.WriteLine("-------------------------------------");
+        PrintArray(arr);
+        Console.WriteLine("------------------------------------------");
         int n = arr.Length;
+        Sort(arr, n);
+        Console.WriteLine("------------------------------------------");
+        Console.WriteLine("Sorted array");
+        PrintArray(arr);
+        Console.WriteLine("------------------------------------------");
+        Console.WriteLine();
+        Console.WriteLine();
+
+    }
+
+    public abstract void Sort(int[] arr, int n);
+
+    public void PrintArray(int[] arr)
+    {
+        foreach (var item in arr)
+        {
+            Console.Write(item + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+class Bubble : A
+{
+    public override void Sort(int[] arr, int n)
+    {
         for (int i = 0; i < n - 1; i++)
         {
             for (int j = 0; j < n - i - 1; j++)
@@ -33,23 +56,15 @@ class A : B
                     arr[j] = arr[j + 1];
                     arr[j + 1] = tempVar;
                 }
-            DisplayArray(arr);
+            PrintArray(arr);
         }
-        Console.WriteLine("-------------------------------------");
-        Console.WriteLine("Sorted by Bubble sort:");
-        DisplayArray(arr);
-        Console.WriteLine("-------------------------------------");
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
+
     }
-    public override void Insertion(int[] arr)
+}
+class Insertion : A
+{
+    public override void Sort(int[] arr, int n)
     {
-        Console.WriteLine("-------------------------------------");
-        Console.WriteLine("Unsorted array");
-        DisplayArray(arr);
-        Console.WriteLine("-------------------------------------");
-        int n = arr.Length;
         for (int i = 1; i < n; ++i)
         {
             int key = arr[i];
@@ -61,23 +76,14 @@ class A : B
                 j = j - 1;
             }
             arr[j + 1] = key;
-            DisplayArray(arr);
+            PrintArray(arr);
         }
-        Console.WriteLine("-------------------------------------");
-        Console.WriteLine("Sorted by Insertion sort:");
-        DisplayArray(arr);
-        Console.WriteLine("-------------------------------------");
-        Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
     }
-    public override void Selection(int[] arr)
+}
+class Selection : A
+{
+    public override void Sort(int[] arr, int n)
     {
-        Console.WriteLine("-------------------------------------");
-        Console.WriteLine("Unsorted array");
-        DisplayArray(arr);
-        Console.WriteLine("-------------------------------------");
-        int n = arr.Length;
         for (int i = 0; i < n - 1; i++)
         {
             int minIndex = i;
@@ -91,20 +97,7 @@ class A : B
             int tempVar = arr[minIndex];
             arr[minIndex] = arr[i];
             arr[i] = tempVar;
-            DisplayArray(arr);
+            PrintArray(arr);
         }
-        Console.WriteLine("-------------------------------------");
-        Console.WriteLine("Sorted by Selection sort:");
-        DisplayArray(arr);
-        Console.WriteLine("-------------------------------------");
-    }
-
-    private void DisplayArray(int[] arr)
-    {
-        foreach (var item in arr)
-        {
-            Console.Write(item + " ");
-        }
-        Console.WriteLine();
     }
 }
