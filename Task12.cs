@@ -2,32 +2,44 @@
 int[] arr2 = { 155, 160, 153, 158, 165, 167, 169, 170, 190, 180, 185 };
 int[] arr3 = { 5, 4, 8, 7, 3, 6, 10, 9, 2, 1 };
 
-A ob = new Bubble();
+Algorithm bubble = new Bubble();
 Console.WriteLine("Bubble");
-ob.Methods(arr1);
-ob = new Insertion();
+bubble.Methods(arr1);
+Algorithm insertion = new Insertion();
 Console.WriteLine("Insertion");
-ob.Methods(arr2);
-ob = new Selection();
+insertion.Methods(arr2);
+Algorithm selection = new Selection();
 Console.WriteLine("Selection");
-ob.Methods(arr3);
+selection.Methods(arr3);
 
-abstract class A
+abstract class Algorithm
 {
     public void Methods(int[] numbers)
     {
-        Console.WriteLine();
-        Console.WriteLine("Unsorted");
         Print(numbers);
-        Console.WriteLine();
         int numLength = numbers.Length;
         Sort(numbers, numLength);
-        Console.WriteLine();
-        Console.WriteLine("Sorted");
         Print(numbers);
         Console.WriteLine();
-        Console.WriteLine();
-        Console.WriteLine();
+    }
+
+    public void Swap(ref int a, ref int b)
+    {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+
+    public int Compare(int a, int b)
+    {
+        if (a > b)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
 
     }
 
@@ -43,26 +55,22 @@ abstract class A
     }
 }
 
-class Bubble : A
+class Bubble : Algorithm
 {
     public override void Sort(int[] numbers, int numLength)
     {
-        int t;
         for (int i = 0; i < numLength - 1; i++)
         {
             for (int j = 0; j < numLength - i - 1; j++)
-                if (numbers[j] > numbers[j + 1])
+                if (Compare(numbers[j], numbers[j + 1]) == 1)
                 {
-                    t = numbers[j + 1];
-                    numbers[j + 1] = numbers[j];
-                    numbers[j] = t;
+                    Swap(ref numbers[j], ref numbers[j + 1]);
                 }
-            Print(numbers);
         }
 
     }
 }
-class Insertion : A
+class Insertion : Algorithm
 {
     public override void Sort(int[] numbers, int numLength)
     {
@@ -71,17 +79,16 @@ class Insertion : A
             int key = numbers[i];
             int j = i - 1;
 
-            while (j >= 0 && numbers[j] > key)
+            while (j >= 0 && Compare(numbers[j], key) == 1)
             {
                 numbers[j + 1] = numbers[j];
                 j = j - 1;
             }
             numbers[j + 1] = key;
-            Print(numbers);
         }
     }
 }
-class Selection : A
+class Selection : Algorithm
 {
     public override void Sort(int[] numbers, int numLength)
     {
@@ -90,15 +97,12 @@ class Selection : A
             int minIndex = i;
             for (int j = i + 1; j < numLength; j++)
             {
-                if (numbers[j] < numbers[minIndex])
+                if (Compare(numbers[j], numbers[minIndex]) == 0)
                 {
                     minIndex = j;
                 }
             }
-            int tempVar = numbers[minIndex];
-            numbers[minIndex] = numbers[i];
-            numbers[i] = tempVar;
-            Print(numbers);
+            Swap(ref numbers[minIndex], ref numbers[i]);
         }
     }
 }
