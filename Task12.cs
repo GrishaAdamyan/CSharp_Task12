@@ -1,108 +1,102 @@
-﻿int[] arr1 = { 17, 18, 15, 19, 14, 20, 12, 24, 30, 10 };
-int[] arr2 = { 155, 160, 153, 158, 165, 167, 169, 170, 190, 180, 185 };
-int[] arr3 = { 5, 4, 8, 7, 3, 6, 10, 9, 2, 1 };
-
-Algorithm bubble = new Bubble();
+﻿using System;
+Sorter ob1 = new Bubble();
 Console.WriteLine("Bubble");
-bubble.Methods(arr1);
-Algorithm insertion = new Insertion();
-Console.WriteLine("Insertion");
-insertion.Methods(arr2);
-Algorithm selection = new Selection();
-Console.WriteLine("Selection");
-selection.Methods(arr3);
-
-abstract class Algorithm
+ob1.DoSort();
+Console.WriteLine();
+Sorter ob2 = new Insert();
+Console.WriteLine("Insert");
+ob2.DoSort();
+Console.WriteLine();
+Sorter ob3 = new Select();
+Console.WriteLine("Select");
+ob3.DoSort();
+abstract class Sorter
 {
-    public void Methods(int[] numbers)
+    protected int N = 15;
+    protected int[] arr;
+    public void init()
     {
-        Print(numbers);
-        int numLength = numbers.Length;
-        Sort(numbers, numLength);
-        Print(numbers);
+        arr = new int[N];
+        Random r = new Random();
+        for (int i = 0; i < N; i++)
+            arr[i] = r.Next(1, 100);
+        for (int i = 0; i < N; i++)
+            Console.Write(arr[i] + " ");
         Console.WriteLine();
     }
-
+    public bool Cond(ref int a, ref int b)
+    {
+        return a > b;
+    }
     public void Swap(ref int a, ref int b)
     {
         int temp = a;
         a = b;
         b = temp;
     }
-
-    public int Compare(int a, int b)
+    public void output()
     {
-        if (a > b)
+        for (int i = 0; i < N; i++)
         {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
-
-    }
-
-    public abstract void Sort(int[] numbers, int numLength);
-
-    public void Print(int[] numbers)
-    {
-        foreach (var num in numbers)
-        {
-            Console.Write(num + " ");
+            Console.Write(arr[i] + " ");
         }
         Console.WriteLine();
     }
-}
-
-class Bubble : Algorithm
-{
-    public override void Sort(int[] numbers, int numLength)
+    public void DoSort() //Template Method
     {
-        for (int i = 0; i < numLength - 1; i++)
+        init();
+        Sort();
+        output();
+    }
+    protected abstract void Sort();
+}
+class Bubble : Sorter
+{
+    protected override void Sort()
+    {
+        for (int i = 0; i < N - 1; i++)
         {
-            for (int j = 0; j < numLength - i - 1; j++)
-                if (Compare(numbers[j], numbers[j + 1]) == 1)
+            for (int j = 0; j < N - i - 1; j++)
+            {
+                if (Cond(ref arr[j], ref arr[j + 1]))
                 {
-                    Swap(ref numbers[j], ref numbers[j + 1]);
+                    Swap(ref arr[j], ref arr[j + 1]);
                 }
+            }
         }
-
     }
 }
-class Insertion : Algorithm
+class Insert : Sorter
 {
-    public override void Sort(int[] numbers, int numLength)
+    protected override void Sort()
     {
-        for (int i = 1; i < numLength; i++)
+        for (int i = 1; i < N; i++)
         {
-            int key = numbers[i];
             int j = i - 1;
 
-            while (j >= 0 && Compare(numbers[j], key) == 1)
+            while (j >= 0 && Cond(ref arr[j], ref arr[j + 1]))
             {
-                numbers[j + 1] = numbers[j];
-                j = j - 1;
+                Swap(ref arr[j], ref arr[j + 1]);
+                j -= 1;
             }
-            numbers[j + 1] = key;
         }
     }
 }
-class Selection : Algorithm
+class Select : Sorter
 {
-    public override void Sort(int[] numbers, int numLength)
+    protected override void Sort()
     {
-        for (int i = 0; i < numLength - 1; i++)
+        for (int i = 0; i < N - 1; i++)
         {
             int minIndex = i;
-            for (int j = i + 1; j < numLength; j++)
+            for (int j = i + 1; j < N; j++)
             {
-                if (Compare(numbers[j], numbers[minIndex]) == 0)
+                if (Cond(ref arr[minIndex], ref arr[j]))
                 {
                     minIndex = j;
                 }
             }
-            Swap(ref numbers[minIndex], ref numbers[i]);
+            Swap(ref arr[i], ref arr[minIndex]);
         }
     }
 }
