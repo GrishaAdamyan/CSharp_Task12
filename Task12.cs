@@ -12,41 +12,31 @@ Console.WriteLine("Select");
 ob3.DoSort();
 abstract class Sorter
 {
+    public void DoSort() //Template Method
+    {
+        init();
+        Sort();
+        output();
+    }
     protected int N = 15;
     protected int[] arr;
-    public void init()
+    protected void init()
     {
         arr = new int[N];
         Random r = new Random();
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i<N; i++)
             arr[i] = r.Next(1, 100);
         for (int i = 0; i < N; i++)
             Console.Write(arr[i] + " ");
-        Console.WriteLine();
+            Console.WriteLine();
     }
-    public bool Cond(ref int a, ref int b)
-    {
-        return a > b;
-    }
-    public void Swap(ref int a, ref int b)
-    {
-        int temp = a;
-        a = b;
-        b = temp;
-    }
-    public void output()
+    protected void output()
     {
         for (int i = 0; i < N; i++)
         {
             Console.Write(arr[i] + " ");
         }
         Console.WriteLine();
-    }
-    public void DoSort() //Template Method
-    {
-        init();
-        Sort();
-        output();
     }
     protected abstract void Sort();
 }
@@ -58,9 +48,11 @@ class Bubble : Sorter
         {
             for (int j = 0; j < N - i - 1; j++)
             {
-                if (Cond(ref arr[j], ref arr[j + 1]))
+                if (arr[j] > arr[j + 1])
                 {
-                    Swap(ref arr[j], ref arr[j + 1]);
+                    var tempVar = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = tempVar;
                 }
             }
         }
@@ -70,15 +62,17 @@ class Insert : Sorter
 {
     protected override void Sort()
     {
-        for (int i = 1; i < N; i++)
+        for (int i = 1; i < N; ++i)
         {
+            int key = arr[i];
             int j = i - 1;
 
-            while (j >= 0 && Cond(ref arr[j], ref arr[j + 1]))
+            while (j >= 0 && arr[j] > key)
             {
-                Swap(ref arr[j], ref arr[j + 1]);
-                j -= 1;
+                arr[j + 1] = arr[j];
+                j = j - 1;
             }
+            arr[j + 1] = key;
         }
     }
 }
@@ -91,12 +85,14 @@ class Select : Sorter
             int minIndex = i;
             for (int j = i + 1; j < N; j++)
             {
-                if (Cond(ref arr[minIndex], ref arr[j]))
+                if (arr[j] < arr[minIndex])
                 {
                     minIndex = j;
                 }
             }
-            Swap(ref arr[i], ref arr[minIndex]);
+            int tempVar = arr[minIndex];
+            arr[minIndex] = arr[i];
+            arr[i] = tempVar;
         }
     }
 }
